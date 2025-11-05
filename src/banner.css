@@ -1,0 +1,45 @@
+/* CSS variables for slide directions - scoped to the container */
+#noticely-banner-container {
+  .banner-slide-left {
+    --slide: -100%;
+  }
+
+  .banner-slide-right {
+    --slide: 100%;
+  }
+}
+
+/* Custom keyframes - cannot be replicated with Tailwind animations - scoped to container */
+@keyframes banner-enter {
+  0% {
+    opacity: 0;
+    transform: translateX(var(--slide, 100%)) scale(0.95);
+  }
+  60% {
+    transform: scale(1.05);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+@keyframes banner-exit {
+  0% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(var(--slide, 100%)) scale(0.9);
+  }
+}
+
+@keyframes banner-fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}

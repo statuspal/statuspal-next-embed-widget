@@ -1,0 +1,5 @@
+# Serve main.iife.js at root
+/  /main.iife.js  200
+
+# Keep all other files accessible at their paths
+/*  /:splat  200

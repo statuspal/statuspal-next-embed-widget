@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Noticely Widget Demo</title>
+    <link rel="icon" href="./favicon.png" type="image/png" />
+    <link href="./index.css" rel="stylesheet" type="text/css" />
+  </head>
+  <body>
+    <div class="demo-container">
+      <!-- Status Badge Example -->
+      <div class="demo-navbar">
+        <div class="demo-navbar-start">
+          <span class="demo-navbar-title">My Website</span>
+        </div>
+        <div class="demo-navbar-end">
+          <a
+            href="http://acme.spage.test:7070"
+            class="noticely-badge-container demo-btn demo-btn-ghost"
+            >System Status</a
+          >
+        </div>
+      </div>
+
+      <!-- Hero Section -->
+      <div class="demo-hero">
+        <div class="demo-hero-content">
+          <div class="demo-hero-content-inner">
+            <h1 class="demo-title">Noticely Widget Demo</h1>
+            <p class="demo-subtitle">
+              Embeddable status widget and badge built with Preact. Features
+              both status banners and inline badges with real-time updates.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Interactive Demo Section -->
+      <div
+        class="demo-card demo-card-secondary demo-card-shadow-md demo-card-accent demo-mb-8"
+      >
+        <div class="demo-card-body">
+          <h3 class="demo-card-title">🧪 Interactive Demo</h3>
+          <p class="demo-text-secondary demo-mb-6">
+            Test the banner and badge with different configurations:
+          </p>
+
+          <div class="demo-grid demo-grid-1 demo-grid-responsive demo-gap-lg">
+            <div class="demo-card demo-card-primary demo-card-shadow">
+              <div class="demo-card-body">
+                <h4 class="demo-card-title-lg demo-mb-4">Banner Controls</h4>
+                <div class="demo-grid demo-grid-2 demo-gap-sm">
+                  <button
+                    class="demo-btn demo-btn-primary demo-btn-sm"
+                    onclick="enableBanner('bottom-right', 'auto')"
+                  >
+                    Basic Banner
+                  </button>
+                  <button
+                    class="demo-btn demo-btn-primary demo-btn-sm"
+                    onclick="enableBanner('top-right', 'dark')"
+                  >
+                    Dark Theme
+                  </button>
+                  <button
+                    class="demo-btn demo-btn-primary demo-btn-sm"
+                    onclick="enableBanner('top-left', 'light')"
+                  >
+                    Top Position
+                  </button>
+                  <button
+                    class="demo-btn demo-btn-secondary demo-btn-sm"
+                    onclick="disableBanner()"
+                  >
+                    Disable Banner
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="demo-card demo-card-primary demo-card-shadow">
+              <div class="demo-card-body">
+                <h4 class="demo-card-title-lg demo-mb-4">Badge Controls</h4>
+                <div class="demo-grid demo-grid-2 demo-gap-sm">
+                  <button
+                    class="demo-btn demo-btn-accent demo-btn-sm"
+                    onclick="enableBadge('right', 'auto')"
+                  >
+                    Enable Badge
+                  </button>
+                  <button
+                    class="demo-btn demo-btn-accent demo-btn-sm"
+                    onclick="enableBadge('top', 'dark')"
+                  >
+                    Dark Badge
+                  </button>
+                  <button
+                    class="demo-btn demo-btn-accent demo-btn-sm"
+                    onclick="enableBadge('left', 'light')"
+                  >
+                    Left Tooltip
+                  </button>
+                  <button
+                    class="demo-btn demo-btn-secondary demo-btn-sm"
+                    onclick="disableBadge()"
+                  >
+                    Disable Badge
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Additional Badge Examples -->
+          <div class="demo-divider demo-mt-8">Additional Badge Examples</div>
+          <div
+            class="demo-flex demo-gap-md demo-flex-wrap demo-flex-center demo-flex-items-center"
+          >
+            <a
+              href="http://acme.spage.test:7070"
+              class="noticely-badge-container demo-btn demo-btn-outline demo-btn-sm"
+              >API Status</a
+            >
+            <a
+              href="http://acme.spage.test:7070"
+              class="noticely-badge-container demo-btn demo-btn-ghost demo-btn-sm"
+              >Services</a
+            >
+            <span class="noticely-badge-container demo-badge demo-badge-neutral"
+              >System Health</span
+            >
+          </div>
+        </div>
+      </div>
+
+      <!-- Usage Guide -->
+      <div
+        class="demo-card demo-card-secondary demo-card-shadow-md demo-card-accent"
+      >
+        <div class="demo-card-body">
+          <h3 class="demo-card-title">📋 Production Usage</h3>
+          <p class="demo-text-secondary demo-mb-4">
+            Copy this code to add the widget to your website:
+          </p>
+
+          <div class="demo-code demo-mb-4">
+            <pre
+              data-prefix="1"
+            ><code>&lt;!-- Add to your HTML head or body --&gt;</code></pre>
+            <pre data-prefix="2"><code>&lt;script&gt;</code></pre>
+            <pre
+              data-prefix="3"
+            ><code>  window.NoticelyWidgetConfig = {</code></pre>
+            <pre
+              data-prefix="4"
+            ><code>    origin: 'https://status.noticely.io',</code></pre>
+            <pre
+              data-prefix="5"
+            ><code>    banner: { enabled: true },</code></pre>
+            <pre data-prefix="6"><code>    badge: { enabled: true }</code></pre>
+            <pre data-prefix="7"><code>  };</code></pre>
+            <pre data-prefix="8"><code>&lt;/script&gt;</code></pre>
+            <pre
+              data-prefix="9"
+            ><code>&lt;script src="https://widget.noticely.io"&gt;&lt;/script&gt;</code></pre>
+            <pre data-prefix="10"><code></code></pre>
+            <pre
+              data-prefix="11"
+            ><code>&lt;!-- Add badge containers anywhere --&gt;</code></pre>
+            <pre data-prefix="12"><code>&lt;a</code></pre>
+            <pre
+              data-prefix="13"
+            ><code>  href="https://status.noticely.io"</code></pre>
+            <pre
+              data-prefix="14"
+            ><code>  class="noticely-badge-container"</code></pre>
+            <pre data-prefix="15"><code>  target="_blank"</code></pre>
+            <pre data-prefix="16"><code>&gt;Status&lt;/a&gt;</code></pre>
+          </div>
+
+          <details class="demo-collapse">
+            <summary class="demo-collapse-title">
+              Advanced Configuration
+            </summary>
+            <div class="demo-collapse-content">
+              <div class="demo-code">
+                <pre
+                  data-prefix="$"
+                ><code>window.NoticelyWidgetConfig = {</code></pre>
+                <pre
+                  data-prefix="$"
+                ><code>  origin: 'https://status.noticely.io',</code></pre>
+                <pre
+                  data-prefix="$"
+                ><code>  theme: 'dark', // auto, light, dark</code></pre>
+                <pre data-prefix="$"><code>  banner: {</code></pre>
+                <pre data-prefix="$"><code>    enabled: true,</code></pre>
+                <pre
+                  data-prefix="$"
+                ><code>    position: 'top-right', // positions available</code></pre>
+                <pre
+                  data-prefix="$"
+                ><code>    theme: 'light' // override global theme</code></pre>
+                <pre data-prefix="$"><code>  },</code></pre>
+                <pre data-prefix="$"><code>  badge: {</code></pre>
+                <pre data-prefix="$"><code>    enabled: true,</code></pre>
+                <pre
+                  data-prefix="$"
+                ><code>    selector: '.status-badge', // custom selector</code></pre>
+                <pre
+                  data-prefix="$"
+                ><code>    placement: 'top', // tooltip placement</code></pre>
+                <pre
+                  data-prefix="$"
+                ><code>    theme: 'auto' // override global theme</code></pre>
+                <pre data-prefix="$"><code>  }</code></pre>
+                <pre data-prefix="$"><code>};</code></pre>
+              </div>
+            </div>
+          </details>
+
+          <div class="demo-alert demo-alert-info demo-mt-4">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+              ></path>
+            </svg>
+            <span
+              >The widget automatically refreshes status every minute and shows
+              banners only for new incidents/maintenance.</span
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Widget Configuration -->
+    <script>
+      window.NoticelyWidgetConfig = {
+        origin: 'http://acme.spage.test:7070',
+        demo: true,
+        banner: { enabled: true, position: 'bottom-right' },
+        badge: { enabled: true }
+      };
+    </script>
+    <!-- Development: Use module version for easier local development -->
+    <script type="module" src="/src/main.tsx"></script>
+
+    <!-- Demo Control Functions -->
+    <script>
+      const updateConfig = updates => {
+        window.NoticelyWidgetConfig = {
+          ...window.NoticelyWidgetConfig,
+          ...updates
+        };
+        window.NoticelyWidget.create();
+      };
+
+      window.enableBanner = (position = 'bottom-right', theme = 'auto') => {
+        updateConfig({
+          banner: {
+            enabled: true,
+            position,
+            theme
+          }
+        });
+      };
+
+      window.disableBanner = () => {
+        updateConfig({
+          banner: { enabled: false }
+        });
+      };
+
+      window.enableBadge = (placement = 'right', theme = 'auto') => {
+        updateConfig({
+          badge: {
+            enabled: true,
+            placement,
+            theme
+          }
+        });
+      };
+
+      window.disableBadge = () => {
+        updateConfig({
+          badge: { enabled: false }
+        });
+      };
+    </script>
+  </body>
+</html>

@@ -1,0 +1,88 @@
+name: CI/CD
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-npm-
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Check code formatting
+        run: npm run format:check
+
+      - name: Run linter
+        run: npm run lint
+
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    needs: test
+    if: github.event_name == 'push'
+
+    environment: production
+    concurrency: production
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Cache dependencies and build files
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.npm
+            .vite
+          key: ${{ runner.os }}-npm-build-${{ hashFiles('**/package-lock.json') }}-${{ hashFiles('**/*.ts', '**/*.tsx', '**/*.js', '**/*.jsx') }}
+          restore-keys: |
+            ${{ runner.os }}-npm-build-${{ hashFiles('**/package-lock.json') }}-
+            ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
+            ${{ runner.os }}-npm-
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build project
+        run: npm run build
+
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy dist --project-name=noticely-embed-widget --branch=main --commit-dirty=true
+
+      - name: Output deployment URL
+        run: |
+          echo "🚀 Deployment complete!"
+          echo "📦 Files deployed from dist/ directory"
+          echo "🔗 Your widget is available at: https://widget.noticely.io"

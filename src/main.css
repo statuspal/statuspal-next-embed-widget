@@ -1,0 +1,8 @@
+@import 'tailwindcss/theme.css' layer(theme);
+@import 'tailwindcss/utilities.css' layer(utilities) source(none);
+
+@source '../src';
+
+@plugin 'daisyui' {
+  root: ':where(#noticely-banner-container, .noticely-badge)';
+}

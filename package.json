@@ -1,0 +1,36 @@
+{
+  "private": true,
+  "type": "module",
+  "name": "noticely-embed-widget",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "lint": "eslint src --ext .ts,.tsx,.js,.jsx",
+    "lint:fix": "eslint src --ext .ts,.tsx,.js,.jsx --fix"
+  },
+  "dependencies": {
+    "@heroicons/react": "^2.2.0",
+    "@tippyjs/react": "^4.2.6",
+    "dayjs": "^1.11.18",
+    "preact": "^10.26.9"
+  },
+  "devDependencies": {
+    "@preact/preset-vite": "^2.10.2",
+    "@tailwindcss/vite": "^4.1.13",
+    "@types/node": "^24.5.0",
+    "@typescript-eslint/eslint-plugin": "^8.44.0",
+    "@typescript-eslint/parser": "^8.44.0",
+    "daisyui": "^5.1.13",
+    "eslint": "^9.35.0",
+    "eslint-config-preact": "^2.0.0",
+    "prettier": "^3.6.2",
+    "tailwindcss": "^4.1.13",
+    "terser": "^5.44.0",
+    "typescript": "^5.9.2",
+    "vite": "^7.0.4",
+    "vite-plugin-css-injected-by-js": "^3.5.2"
+  }
+}
