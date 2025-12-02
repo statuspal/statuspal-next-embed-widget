@@ -14,21 +14,9 @@
     "-lc",
     "rm -f /tmp/devcontainer_ready && touch .devcontainer/.docker_bash_history"
   ],
-  "onCreateCommand": [
-    "bash",
-    "-lc",
-    "npm install"
-  ],
-  "updateContentCommand": [
-    "bash",
-    "-lc",
-    "npm install"
-  ],
-  "postAttachCommand": [
-    "bash",
-    "-lc",
-    "touch /tmp/devcontainer_ready"
-  ],
+  "onCreateCommand": ["bash", "-lc", "npm install"],
+  "updateContentCommand": ["bash", "-lc", "npm install"],
+  "postAttachCommand": ["bash", "-lc", "touch /tmp/devcontainer_ready"],
 
   "remoteEnv": {
     "IN_DEVCONTAINER": "true"
