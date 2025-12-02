@@ -1,0 +1,27 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Nodejs: dev",
+      "type": "shell",
+      "command": "bash",
+      "args": [
+        "-lc",
+        "if [ \"${IN_DEVCONTAINER}\" != \"true\" ]; then exit 0; fi; echo -n \"🚀 Waiting for dev container to be ready...\"; while [ ! -f /tmp/devcontainer_ready ]; do echo -n \".\"; sleep 1; done; echo \"\n✅ Dev container ready! Starting Node server...\n\"; npm run dev -- --host;"
+      ],
+      "options": { "cwd": "${workspaceFolder}" },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "focus": false,
+        "clear": true,
+        "echo": false,
+        "close": true
+      },
+      "runOptions": {
+        "runOn": "folderOpen"
+      }
+    }
+  ]
+}

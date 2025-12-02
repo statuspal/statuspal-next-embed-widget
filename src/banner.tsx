@@ -194,7 +194,7 @@ const Banner = ({
           <small className="leading-4">{humanizedDuration()}</small>
 
           <a
-            href={`${origin}/notices/${currentNotice.id}`}
+            href={origin}
             className="underline hover:opacity-50 transition-opacity text-inherit"
             target="_blank"
             rel="noreferrer"
