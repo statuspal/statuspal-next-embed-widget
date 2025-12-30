@@ -83,7 +83,7 @@ window.NoticelyWidgetConfig = {
 
 ### Prerequisites
 
-- Node.js 18+
+- Node.js 22+
 - npm
 
 ### Setup

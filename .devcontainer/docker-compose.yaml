@@ -1,0 +1,17 @@
+x-versions: &versions
+  NODE_VERSION: 22
+
+services:
+  noticely_embed_widget:
+    build:
+      context: ..
+      dockerfile: ./.devcontainer/Dockerfile
+      args: *versions
+    restart: on-failure
+    volumes:
+      - ..:/app:delegated
+      - ./.docker_bash_history:/root/.bash_history
+    ports:
+      - 5173:5173
+    command: npm install && npm run dev -- --host
+    container_name: noticely_embed_widget
