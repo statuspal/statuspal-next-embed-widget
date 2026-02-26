@@ -1,7 +1,7 @@
 {
-  "name": "Noticely Embed Widget",
+  "name": "StatusPal Next Embed Widget",
   "dockerComposeFile": "docker-compose.yaml",
-  "service": "noticely_embed_widget",
+  "service": "statuspal_next_embed_widget",
 
   "overrideCommand": true,
 

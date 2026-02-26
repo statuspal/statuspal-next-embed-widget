@@ -4,5 +4,5 @@
 @source '../src';
 
 @plugin 'daisyui' {
-  root: ':where(#noticely-banner-container, .noticely-badge)';
+  root: ':where(#statuspal-next-banner-container, .statuspal-next-badge)';
 }

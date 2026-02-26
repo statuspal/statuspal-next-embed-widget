@@ -2,7 +2,7 @@ x-versions: &versions
   NODE_VERSION: 22
 
 services:
-  noticely_embed_widget:
+  statuspal_next_embed_widget:
     build:
       context: ..
       dockerfile: ./.devcontainer/Dockerfile
@@ -14,4 +14,4 @@ services:
     ports:
       - 5173:5173
     command: npm install && npm run dev -- --host
-    container_name: noticely_embed_widget
+    container_name: statuspal_next_embed_widget

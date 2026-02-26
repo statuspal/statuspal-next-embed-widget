@@ -1,5 +1,5 @@
 /* CSS variables for slide directions - scoped to the container */
-#noticely-banner-container {
+#statuspal-next-banner-container {
   .banner-slide-left {
     --slide: -100%;
   }

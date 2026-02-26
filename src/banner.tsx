@@ -3,8 +3,8 @@ import { Fragment } from 'preact';
 import { useState, useEffect, useRef } from 'preact/hooks';
 import { StatusResponse } from 'types/general';
 import {
-  NOTICELY_BANNER_LOCAL_STORAGE_KEY,
-  NOTICELY_CLOSE_BANNER_EVENT
+  STATUSPAL_NEXT_BANNER_LOCAL_STORAGE_KEY,
+  STATUSPAL_NEXT_CLOSE_BANNER_EVENT
 } from './main';
 import ExclamationTriangleIcon from '@heroicons/react/24/solid/ExclamationTriangleIcon';
 import WrenchIcon from '@heroicons/react/24/solid/WrenchIcon';
@@ -25,7 +25,7 @@ const Banner = ({
   options = {}
 }: {
   data: StatusResponse;
-  config: ReturnType<typeof window.NoticelyWidget.getConfig>;
+  config: ReturnType<typeof window.StatusPalNextWidget.getConfig>;
   options?: { noEnterAnimation?: boolean };
 }) => {
   const [ongoingNotices, setOngoingNotices] = useState([...ongoing_notices]);
@@ -41,7 +41,7 @@ const Banner = ({
       if (!isClosing) return;
 
       if (ongoingNotices.length < 2) {
-        window.NoticelyWidget.destroy({
+        window.StatusPalNextWidget.destroy({
           onlyBanner: true,
           animationEnded: true
         });
@@ -65,11 +65,14 @@ const Banner = ({
 
   useEffect(() => {
     const handleCloseBanner = () => setIsClosing(true);
-    window.addEventListener(NOTICELY_CLOSE_BANNER_EVENT, handleCloseBanner);
+    window.addEventListener(
+      STATUSPAL_NEXT_CLOSE_BANNER_EVENT,
+      handleCloseBanner
+    );
 
     return () =>
       window.removeEventListener(
-        NOTICELY_CLOSE_BANNER_EVENT,
+        STATUSPAL_NEXT_CLOSE_BANNER_EVENT,
         handleCloseBanner
       );
   }, []);
@@ -90,12 +93,13 @@ const Banner = ({
   const closeBanner = (): void => {
     setIsClosing(true);
 
-    if (!window.NoticelyWidgetConfig.demo)
+    if (!window.StatusPalNextWidgetConfig.demo)
       localStorage.setItem(
-        NOTICELY_BANNER_LOCAL_STORAGE_KEY,
+        STATUSPAL_NEXT_BANNER_LOCAL_STORAGE_KEY,
         JSON.stringify([
           ...JSON.parse(
-            localStorage.getItem(NOTICELY_BANNER_LOCAL_STORAGE_KEY) || '[]'
+            localStorage.getItem(STATUSPAL_NEXT_BANNER_LOCAL_STORAGE_KEY) ||
+              '[]'
           ),
           currentNotice.id
         ])

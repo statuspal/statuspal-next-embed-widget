@@ -4,7 +4,7 @@ type BadgePlacement = 'top' | 'bottom' | 'left' | 'right';
 
 // Global types
 declare interface Window {
-  NoticelyWidget: {
+  StatusPalNextWidget: {
     create: () => Promise<void>;
     destroy: (options?: {
       onlyBanner?: boolean;
@@ -26,7 +26,7 @@ declare interface Window {
       };
     };
   };
-  NoticelyWidgetConfig?: {
+  StatusPalNextWidgetConfig?: {
     origin?: string;
     enabled?: boolean;
     theme?: Theme;
@@ -43,4 +43,7 @@ declare interface Window {
       selector?: string;
     };
   };
+  // For backwards compatibility
+  NoticelyWidget: Window['StatusPalNextWidget'];
+  NoticelyWidgetConfig?: Window['StatusPalNextWidgetConfig'];
 }
