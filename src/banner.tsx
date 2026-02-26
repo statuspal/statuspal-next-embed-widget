@@ -9,6 +9,7 @@ import {
 import ExclamationTriangleIcon from '@heroicons/react/24/solid/ExclamationTriangleIcon';
 import WrenchIcon from '@heroicons/react/24/solid/WrenchIcon';
 import XMarkIcon from '@heroicons/react/24/solid/XMarkIcon';
+import InformationCircleIcon from '@heroicons/react/24/solid/InformationCircleIcon';
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
 import { statusColors } from './helpers';
@@ -87,6 +88,7 @@ const Banner = ({
 
   const IconComponent = (() => {
     if (currentNotice.notice_type === 'maintenance') return WrenchIcon;
+    if (currentNotice.notice_type === 'info') return InformationCircleIcon;
     return ExclamationTriangleIcon;
   })();
 
