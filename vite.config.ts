@@ -8,7 +8,7 @@ import tailwindcss from '@tailwindcss/vite';
 const createBuildConfig = (isDev = false) => ({
   lib: {
     entry: resolve(process.cwd(), 'src/main.tsx'),
-    name: 'NoticelyWidget',
+    name: 'StatusPalNextWidget',
     fileName: 'main',
     formats: ['iife', ...(isDev ? [] : ['umd'])] as ('iife' | 'umd')[]
   },

@@ -15,7 +15,7 @@ const Badge = ({
   options = {}
 }: {
   data: StatusResponse;
-  config: ReturnType<typeof window.NoticelyWidget.getConfig>;
+  config: ReturnType<typeof window.StatusPalNextWidget.getConfig>;
   element: HTMLElement;
   options?: { noEnterAnimation?: boolean };
 }) => {

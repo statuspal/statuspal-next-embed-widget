@@ -79,10 +79,10 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy dist --project-name=noticely-embed-widget --branch=main --commit-dirty=true
+          command: pages deploy dist --project-name=statuspal-next-embed-widget --branch=main --commit-dirty=true
 
       - name: Output deployment URL
         run: |
           echo "🚀 Deployment complete!"
           echo "📦 Files deployed from dist/ directory"
-          echo "🔗 Your widget is available at: https://widget.noticely.io"
+          echo "🔗 Your widget is available at: https://widget.next.statuspal.io"

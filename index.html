@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Noticely Widget Demo</title>
+    <title>StatusPal Next Widget Demo</title>
     <link rel="icon" href="./favicon.png" type="image/png" />
     <link href="./index.css" rel="stylesheet" type="text/css" />
   </head>
@@ -17,7 +17,7 @@
         <div class="demo-navbar-end">
           <a
             href="http://acme.spage.test:7070"
-            class="noticely-badge-container demo-btn demo-btn-ghost"
+            class="statuspal-next-badge-container demo-btn demo-btn-ghost"
             >System Status</a
           >
         </div>
@@ -27,7 +27,7 @@
       <div class="demo-hero">
         <div class="demo-hero-content">
           <div class="demo-hero-content-inner">
-            <h1 class="demo-title">Noticely Widget Demo</h1>
+            <h1 class="demo-title">StatusPal Next Widget Demo</h1>
             <p class="demo-subtitle">
               Embeddable status widget and badge built with Preact. Features
               both status banners and inline badges with real-time updates.
@@ -119,15 +119,16 @@
           >
             <a
               href="http://acme.spage.test:7070"
-              class="noticely-badge-container demo-btn demo-btn-outline demo-btn-sm"
+              class="statuspal-next-badge-container demo-btn demo-btn-outline demo-btn-sm"
               >API Status</a
             >
             <a
               href="http://acme.spage.test:7070"
-              class="noticely-badge-container demo-btn demo-btn-ghost demo-btn-sm"
+              class="statuspal-next-badge-container demo-btn demo-btn-ghost demo-btn-sm"
               >Services</a
             >
-            <span class="noticely-badge-container demo-badge demo-badge-neutral"
+            <span
+              class="statuspal-next-badge-container demo-badge demo-badge-neutral"
               >System Health</span
             >
           </div>
@@ -151,10 +152,10 @@
             <pre data-prefix="2"><code>&lt;script&gt;</code></pre>
             <pre
               data-prefix="3"
-            ><code>  window.NoticelyWidgetConfig = {</code></pre>
+            ><code>  window.StatusPalNextWidgetConfig = {</code></pre>
             <pre
               data-prefix="4"
-            ><code>    origin: 'https://status.noticely.io',</code></pre>
+            ><code>    origin: 'https://status.statuspal.page',</code></pre>
             <pre
               data-prefix="5"
             ><code>    banner: { enabled: true },</code></pre>
@@ -163,7 +164,7 @@
             <pre data-prefix="8"><code>&lt;/script&gt;</code></pre>
             <pre
               data-prefix="9"
-            ><code>&lt;script src="https://widget.noticely.io"&gt;&lt;/script&gt;</code></pre>
+            ><code>&lt;script src="https://widget.next.statuspal.io"&gt;&lt;/script&gt;</code></pre>
             <pre data-prefix="10"><code></code></pre>
             <pre
               data-prefix="11"
@@ -171,10 +172,10 @@
             <pre data-prefix="12"><code>&lt;a</code></pre>
             <pre
               data-prefix="13"
-            ><code>  href="https://status.noticely.io"</code></pre>
+            ><code>  href="https://status.statuspal.page"</code></pre>
             <pre
               data-prefix="14"
-            ><code>  class="noticely-badge-container"</code></pre>
+            ><code>  class="statuspal-next-badge-container"</code></pre>
             <pre data-prefix="15"><code>  target="_blank"</code></pre>
             <pre data-prefix="16"><code>&gt;Status&lt;/a&gt;</code></pre>
           </div>
@@ -187,10 +188,10 @@
               <div class="demo-code">
                 <pre
                   data-prefix="$"
-                ><code>window.NoticelyWidgetConfig = {</code></pre>
+                ><code>window.StatusPalNextWidgetConfig = {</code></pre>
                 <pre
                   data-prefix="$"
-                ><code>  origin: 'https://status.noticely.io',</code></pre>
+                ><code>  origin: 'https://status.statuspal.page',</code></pre>
                 <pre
                   data-prefix="$"
                 ><code>  theme: 'dark', // auto, light, dark</code></pre>
@@ -244,7 +245,7 @@
 
     <!-- Widget Configuration -->
     <script>
-      window.NoticelyWidgetConfig = {
+      window.StatusPalNextWidgetConfig = {
         origin: 'http://acme.spage.test:7070',
         demo: true,
         banner: { enabled: true, position: 'bottom-right' },
@@ -257,11 +258,11 @@
     <!-- Demo Control Functions -->
     <script>
       const updateConfig = updates => {
-        window.NoticelyWidgetConfig = {
-          ...window.NoticelyWidgetConfig,
+        window.StatusPalNextWidgetConfig = {
+          ...window.StatusPalNextWidgetConfig,
           ...updates
         };
-        window.NoticelyWidget.create();
+        window.StatusPalNextWidget.create();
       };
 
       window.enableBanner = (position = 'bottom-right', theme = 'auto') => {

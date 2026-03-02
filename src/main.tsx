@@ -5,32 +5,38 @@ import Banner from './banner';
 import Badge from './badge';
 import testResponse from './test-response';
 
-export const NOTICELY_BANNER_CONTAINER_ID = 'noticely-banner-container';
-export const NOTICELY_BANNER_LOCAL_STORAGE_KEY = 'noticely-viewed-notices';
-export const NOTICELY_BADGE_CONTAINER_CLASS = 'noticely-badge';
-export const NOTICELY_CLOSE_BANNER_EVENT = 'noticely-close-banner';
+export const STATUSPAL_NEXT_BANNER_CONTAINER_ID =
+  'statuspal-next-banner-container';
+export const STATUSPAL_NEXT_BANNER_LOCAL_STORAGE_KEY =
+  'statuspal-next-viewed-notices';
+export const STATUSPAL_NEXT_BADGE_CONTAINER_CLASS = 'statuspal-next-badge';
+export const STATUSPAL_NEXT_CLOSE_BANNER_EVENT = 'statuspal-next-close-banner';
 export const REFRESH_INTERVAL = 60000; // ms
 
 let interval: number | null = null;
 let previousStatus = '';
 
+// For backwards compatibility
+if (!window.StatusPalNextWidgetConfig)
+  window.StatusPalNextWidgetConfig = window.NoticelyWidgetConfig;
+
 // Global API setup
-window.NoticelyWidget = {
+window.StatusPalNextWidget = {
   create: async (): Promise<void> => {
     clearInterval(interval);
 
     // Read configuration from global window object
-    const config = window.NoticelyWidget.getConfig();
+    const config = window.StatusPalNextWidget.getConfig();
 
     if (!config.origin) {
       console.error(
-        'Noticely Widget: Configuration not found. Please provide `window.NoticelyWidgetConfig` object with at least a `origin` property.'
+        'StatusPal Next Widget: Configuration not found. Please provide `window.StatusPalNextWidgetConfig` object with at least a `origin` property.'
       );
       return;
     }
 
     // Destroy existing widget first
-    window.NoticelyWidget.destroy();
+    window.StatusPalNextWidget.destroy();
 
     // Check if widget is enabled (default true)
     if (!config.globalEnabled) return;
@@ -43,14 +49,16 @@ window.NoticelyWidget = {
   },
   destroy: (options = {}): void => {
     if (options.onlyBanner && !options.animationEnded) {
-      window.dispatchEvent(new CustomEvent(NOTICELY_CLOSE_BANNER_EVENT));
+      window.dispatchEvent(new CustomEvent(STATUSPAL_NEXT_CLOSE_BANNER_EVENT));
       return;
     }
 
-    const config = window.NoticelyWidget.getConfig();
+    const config = window.StatusPalNextWidget.getConfig();
 
     // Find and remove the banner container
-    const container = document.getElementById(NOTICELY_BANNER_CONTAINER_ID);
+    const container = document.getElementById(
+      STATUSPAL_NEXT_BANNER_CONTAINER_ID
+    );
     if (container) {
       render(null, container);
       container.remove();
@@ -61,22 +69,23 @@ window.NoticelyWidget = {
     clearInterval(interval);
 
     document
+      // added .noticely-badge-container to support backwards compatibility
       .querySelectorAll(
-        `:where(${config.badge.selector}) .${NOTICELY_BADGE_CONTAINER_CLASS}`
+        `:where(${config.badge.selector}, .noticely-badge-container) .${STATUSPAL_NEXT_BADGE_CONTAINER_CLASS}`
       )
       .forEach(container => {
         render(null, container);
         container.remove();
       });
   },
-  getConfig: (): ReturnType<typeof window.NoticelyWidget.getConfig> => {
+  getConfig: (): ReturnType<typeof window.StatusPalNextWidget.getConfig> => {
     const {
       origin,
       enabled: defaultEnabled = true,
       theme: defaultTheme = 'auto',
       banner = {},
       badge = {}
-    } = window.NoticelyWidgetConfig || {};
+    } = window.StatusPalNextWidgetConfig || {};
     const {
       position: bannerPosition = 'bottom-right',
       theme: bannerTheme = defaultTheme,
@@ -86,7 +95,7 @@ window.NoticelyWidget = {
       placement: badgePlacement = 'right',
       theme: badgeTheme = defaultTheme,
       enabled: badgeEnabled = false,
-      selector: badgeSelector = '.noticely-badge-container'
+      selector: badgeSelector = '.statuspal-next-badge-container'
     } = badge;
 
     return {
@@ -107,10 +116,13 @@ window.NoticelyWidget = {
   }
 };
 
+// For backwards compatibility
+window.NoticelyWidget = window.StatusPalNextWidget;
+
 const renderWidget = async (
   options: { noEnterAnimation?: boolean } = {}
 ): Promise<void> => {
-  const config = window.NoticelyWidget.getConfig();
+  const config = window.StatusPalNextWidget.getConfig();
 
   let data: StatusResponse;
   try {
@@ -118,18 +130,18 @@ const renderWidget = async (
     data = await response.json();
   } catch (error) {
     console.error(error);
-    if (!window.NoticelyWidgetConfig.demo) return;
+    if (!window.StatusPalNextWidgetConfig.demo) return;
 
     data = testResponse;
   }
 
-  if (window.NoticelyWidgetConfig.demo && !data.ongoing_notices.length)
+  if (window.StatusPalNextWidgetConfig.demo && !data.ongoing_notices.length)
     data = testResponse;
 
   if (config.banner.enabled) {
-    if (!window.NoticelyWidgetConfig.demo) {
+    if (!window.StatusPalNextWidgetConfig.demo) {
       const viewedNoticeIds = JSON.parse(
-        localStorage.getItem(NOTICELY_BANNER_LOCAL_STORAGE_KEY) || '[]'
+        localStorage.getItem(STATUSPAL_NEXT_BANNER_LOCAL_STORAGE_KEY) || '[]'
       );
       data.ongoing_notices = data.ongoing_notices.filter(
         notice => !viewedNoticeIds.includes(notice.id)
@@ -138,11 +150,13 @@ const renderWidget = async (
 
     if (data.ongoing_notices.length) {
       // Find existing container or create new one
-      let container = document.getElementById(NOTICELY_BANNER_CONTAINER_ID);
+      let container = document.getElementById(
+        STATUSPAL_NEXT_BANNER_CONTAINER_ID
+      );
       const isInitialRender = !container;
       if (!container) {
         container = document.createElement('div');
-        container.id = NOTICELY_BANNER_CONTAINER_ID;
+        container.id = STATUSPAL_NEXT_BANNER_CONTAINER_ID;
         document.body.appendChild(container);
       } else {
         render(null, container); // Clear previous render
@@ -161,17 +175,20 @@ const renderWidget = async (
         container
       );
     } else {
-      window.NoticelyWidget.destroy({ onlyBanner: true });
+      window.StatusPalNextWidget.destroy({ onlyBanner: true });
     }
   }
 
   if (!config.badge.enabled) return;
 
-  const badgeElements = document.querySelectorAll(config.badge.selector);
+  // added .noticely-badge-container to support backwards compatibility
+  const badgeElements = document.querySelectorAll(
+    `:where(${config.badge.selector}, .noticely-badge-container)`
+  );
 
   if (!badgeElements.length) {
     console.error(
-      `Noticely Widget: No elements found for badge selector "${config.badge.selector}".`
+      `StatusPal Next Widget: No elements found for badge selector "${config.badge.selector}".`
     );
     return;
   }
@@ -180,12 +197,12 @@ const renderWidget = async (
 
   badgeElements.forEach(badgeElement => {
     let container = badgeElement.querySelector(
-      `.${NOTICELY_BADGE_CONTAINER_CLASS}`
+      `.${STATUSPAL_NEXT_BADGE_CONTAINER_CLASS}`
     );
     if (!container) {
       container = document.createElement('span');
       container.classList.add(
-        NOTICELY_BADGE_CONTAINER_CLASS,
+        STATUSPAL_NEXT_BADGE_CONTAINER_CLASS,
         'align-middle',
         'ml-2',
         'inline-flex'
@@ -214,5 +231,8 @@ const renderWidget = async (
 };
 
 if (document.readyState === 'loading')
-  document.addEventListener('DOMContentLoaded', window.NoticelyWidget.create);
-else window.NoticelyWidget.create();
+  document.addEventListener(
+    'DOMContentLoaded',
+    window.StatusPalNextWidget.create
+  );
+else window.StatusPalNextWidget.create();

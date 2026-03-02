@@ -1,4 +1,4 @@
-# Noticely Embed Widget
+# StatusPal Next Embed Widget
 
 A lightweight, embeddable status widget and badge built with Preact. Shows status banners and badges that can be positioned anywhere on your website.
 
@@ -8,10 +8,10 @@ A lightweight, embeddable status widget and badge built with Preact. Shows statu
 
 ```html
 <script>
-  window.NoticelyWidgetConfig = {
-    origin: 'https://status.noticely.io', // Required
+  window.StatusPalNextWidgetConfig = {
+    origin: 'https://status.statuspal.page', // Required
     banner: { enabled: true }, // Enable status banner
-    badge: { enabled: true, selector: '.noticely-badge-container' } // Enable status badge
+    badge: { enabled: true, selector: '.statuspal-next-badge-container' } // Enable status badge
   };
 </script>
 ```
@@ -19,13 +19,15 @@ A lightweight, embeddable status widget and badge built with Preact. Shows statu
 ### 2. Include Widget
 
 ```html
-<script src="https://widget.noticely.io"></script>
+<script src="https://widget.next.statuspal.io"></script>
 ```
 
 ### 3. Add Badge Container (Optional)
 
 ```html
-<a href="https://status.noticely.io" class="noticely-badge-container">Status</a>
+<a href="https://status.statuspal.page" class="statuspal-next-badge-container"
+  >Status</a
+>
 ```
 
 The widget automatically appears when the page loads!
@@ -54,18 +56,18 @@ The widget automatically appears when the page loads!
 
 ### Badge Options (`badge` object)
 
-| Option      | Default                       | Description                                                 |
-| ----------- | ----------------------------- | ----------------------------------------------------------- |
-| `enabled`   | `false`                       | Show/hide status badges                                     |
-| `selector`  | `'.noticely-badge-container'` | CSS selector for badge containers                           |
-| `placement` | `'right'`                     | Tooltip placement: `'top'`, `'bottom'`, `'left'`, `'right'` |
-| `theme`     | inherits global               | Theme override for badge                                    |
+| Option      | Default                             | Description                                                 |
+| ----------- | ----------------------------------- | ----------------------------------------------------------- |
+| `enabled`   | `false`                             | Show/hide status badges                                     |
+| `selector`  | `'.statuspal-next-badge-container'` | CSS selector for badge containers                           |
+| `placement` | `'right'`                           | Tooltip placement: `'top'`, `'bottom'`, `'left'`, `'right'` |
+| `theme`     | inherits global                     | Theme override for badge                                    |
 
 ### Example Configuration
 
 ```javascript
-window.NoticelyWidgetConfig = {
-  origin: 'https://status.noticely.io',
+window.StatusPalNextWidgetConfig = {
+  origin: 'https://status.statuspal.page',
   theme: 'dark',
   banner: {
     enabled: true,
@@ -127,9 +129,9 @@ src/
 ### Global API
 
 ```javascript
-window.NoticelyWidget = {
+window.StatusPalNextWidget = {
   create: function () {
-    // Creates/recreates widget using window.NoticelyWidgetConfig
+    // Creates/recreates widget using window.StatusPalNextWidgetConfig
   },
   destroy: function (options) {
     // Removes widget from page
@@ -145,7 +147,7 @@ window.NoticelyWidget = {
 
 The widget automatically initializes when:
 
-1. `window.NoticelyWidgetConfig` is defined with `origin`
+1. `window.StatusPalNextWidgetConfig` is defined with `origin`
 2. DOM is ready
 3. At least one component is enabled
 
@@ -158,19 +160,21 @@ The widget automatically initializes when:
 <html>
   <body>
     <header>
-      <a href="https://status.noticely.io" class="noticely-badge-container"
+      <a
+        href="https://status.statuspal.page"
+        class="statuspal-next-badge-container"
         >System Status</a
       >
     </header>
 
     <script>
-      window.NoticelyWidgetConfig = {
-        origin: 'https://status.noticely.io',
+      window.StatusPalNextWidgetConfig = {
+        origin: 'https://status.statuspal.page',
         banner: { enabled: true, position: 'bottom-right' },
         badge: { enabled: true }
       };
     </script>
-    <script src="https://widget.noticely.io"></script>
+    <script src="https://widget.next.statuspal.io"></script>
   </body>
 </html>
 ```
@@ -179,8 +183,8 @@ The widget automatically initializes when:
 
 ```html
 <script>
-  window.NoticelyWidgetConfig = {
-    origin: 'https://status.noticely.io',
+  window.StatusPalNextWidgetConfig = {
+    origin: 'https://status.statuspal.page',
     banner: { enabled: true },
     badge: { enabled: false }
   };
@@ -195,8 +199,8 @@ The widget automatically initializes when:
 </nav>
 
 <script>
-  window.NoticelyWidgetConfig = {
-    origin: 'https://status.noticely.io',
+  window.StatusPalNextWidgetConfig = {
+    origin: 'https://status.statuspal.page',
     badge: {
       enabled: true,
       selector: '.status-indicator'
