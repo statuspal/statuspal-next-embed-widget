@@ -21,7 +21,7 @@ export type Service = {
 
 export type StatusPage = {
   current_status: {
-    notice_type: 'maintenance' | 'incident' | 'info' | null;
+    notice_type: 'maintenance' | 'incident' | null;
     severity: 'ok' | 'maintenance' | 'no_severity' | 'minor' | 'major';
   };
 };
