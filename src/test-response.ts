@@ -63,21 +63,21 @@ export default {
       affected_services: {}
     },
     {
-      id: '39ab33bc-b554-411d-bf1f-008763944274',
-      notice_type: 'info',
-      starts_at: now.subtract(30, 'minutes').toISOString(),
-      ends_at: null,
-      title: 'Demo info notice',
-      severity: '',
-      affected_services: {}
-    },
-    {
       id: '92ab8b35-9bf5-4f9c-8326-6a8c34dea06b',
       notice_type: 'maintenance',
       starts_at: now.subtract(30, 'minutes').toISOString(),
       ends_at: now.add(30, 'minutes').toISOString(),
       title: 'Demo maintenance',
       severity: null,
+      affected_services: {}
+    },
+    {
+      id: '39ab33bc-b554-411d-bf1f-008763944274',
+      notice_type: 'info',
+      starts_at: now.subtract(30, 'minutes').toISOString(),
+      ends_at: null,
+      title: 'Demo info notice',
+      severity: '',
       affected_services: {}
     }
   ]
