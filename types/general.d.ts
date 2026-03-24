@@ -7,7 +7,7 @@ export type StatusResponse = {
 export type Notice = {
   id: string;
   title: string;
-  notice_type: 'maintenance' | 'incident';
+  notice_type: 'maintenance' | 'incident' | 'info';
   starts_at: string;
   ends_at?: string | null;
   severity?: 'major' | 'minor' | '' | null;

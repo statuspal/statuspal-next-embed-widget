@@ -70,6 +70,15 @@ export default {
       title: 'Demo maintenance',
       severity: null,
       affected_services: {}
+    },
+    {
+      id: '39ab33bc-b554-411d-bf1f-008763944274',
+      notice_type: 'info',
+      starts_at: now.subtract(30, 'minutes').toISOString(),
+      ends_at: null,
+      title: 'Demo info notice',
+      severity: '',
+      affected_services: {}
     }
   ]
 } as StatusResponse;
