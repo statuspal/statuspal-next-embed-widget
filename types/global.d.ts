@@ -12,6 +12,7 @@ declare interface Window {
     }) => void;
     getConfig: () => {
       origin?: string;
+      token?: string;
       globalEnabled: boolean;
       banner: {
         position: BannerPosition;
@@ -28,6 +29,7 @@ declare interface Window {
   };
   StatusPalNextWidgetConfig?: {
     origin?: string;
+    token?: string;
     enabled?: boolean;
     theme?: Theme;
     demo?: boolean;

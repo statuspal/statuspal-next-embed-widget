@@ -1,6 +1,6 @@
 import './main.css';
 import { render } from 'preact';
-import { StatusResponse } from 'types/general';
+import { StatusResponse, ErrorResponse } from 'types/general';
 import Banner from './banner';
 import Badge from './badge';
 import testResponse from './test-response';
@@ -81,6 +81,7 @@ window.StatusPalNextWidget = {
   getConfig: (): ReturnType<typeof window.StatusPalNextWidget.getConfig> => {
     const {
       origin,
+      token,
       enabled: defaultEnabled = true,
       theme: defaultTheme = 'auto',
       banner = {},
@@ -99,7 +100,8 @@ window.StatusPalNextWidget = {
     } = badge;
 
     return {
-      origin,
+      origin: origin?.replace(/\/$/, ''),
+      token,
       globalEnabled: bannerEnabled || badgeEnabled,
       banner: {
         position: bannerPosition,
@@ -125,9 +127,21 @@ const renderWidget = async (
   const config = window.StatusPalNextWidget.getConfig();
 
   let data: StatusResponse;
+
   try {
-    const response = await fetch(`${config.origin}/api/v1/status`);
-    data = await response.json();
+    const response = await fetch(`${config.origin}/api/v1/status`, {
+      headers: config.token ? { 'X-Widget-Token': config.token } : undefined
+    });
+    const json = await response.json();
+
+    if (!response.ok) {
+      const errorResponse = json as ErrorResponse;
+      throw new Error(
+        `API request failed with status ${response.status}: ${errorResponse.error || response.statusText}`
+      );
+    }
+
+    data = json as StatusResponse;
   } catch (error) {
     console.error(error);
     if (!window.StatusPalNextWidgetConfig.demo) return;
