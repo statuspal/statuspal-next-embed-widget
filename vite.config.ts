@@ -1,7 +1,7 @@
 import { defineConfig, build, loadEnv, ViteDevServer } from 'vite';
 import preact from '@preact/preset-vite';
 import { resolve } from 'path';
-import { readFileSync } from 'fs';
+import { createReadStream } from 'fs';
 import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js';
 import tailwindcss from '@tailwindcss/vite';
 
@@ -16,6 +16,7 @@ const createBuildConfig = (isDev = false) => ({
   minify: 'terser' as const,
   rollupOptions: {
     output: {
+      ...(isDev ? {} : { extend: true }),
       manualChunks: undefined
     }
   },
@@ -35,12 +36,13 @@ const autoRebuild = () => {
       server.middlewares.use('/dist/main.iife.js', (_req, res) => {
         res.setHeader('Content-Type', 'application/javascript');
         res.setHeader('Cache-Control', 'no-store');
-        try {
-          res.end(readFileSync(filePath, 'utf-8'));
-        } catch {
+        const stream = createReadStream(filePath);
+        stream.on('error', () => {
           res.statusCode = 404;
+          res.setHeader('Content-Type', 'text/plain');
           res.end('Not found');
-        }
+        });
+        stream.pipe(res);
       });
     },
     handleHotUpdate() {
