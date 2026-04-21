@@ -15,3 +15,5 @@ services:
       - 5173:5173
     command: npm install && npm run dev -- --host
     container_name: statuspal_next_embed_widget
+    extra_hosts:
+      - host.docker.internal:host-gateway
