@@ -1,6 +1,7 @@
-import { defineConfig, build, loadEnv } from 'vite';
+import { defineConfig, build, loadEnv, ViteDevServer } from 'vite';
 import preact from '@preact/preset-vite';
 import { resolve } from 'path';
+import { createReadStream } from 'fs';
 import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js';
 import tailwindcss from '@tailwindcss/vite';
 
@@ -15,7 +16,7 @@ const createBuildConfig = (isDev = false) => ({
   minify: 'terser' as const,
   rollupOptions: {
     output: {
-      extend: true,
+      ...(isDev ? {} : { extend: true }),
       manualChunks: undefined
     }
   },
@@ -28,6 +29,22 @@ const autoRebuild = () => {
 
   return {
     name: 'auto-rebuild-widget',
+    configureServer(server: ViteDevServer) {
+      // Serve dist/main.iife.js fresh from disk on every request,
+      // bypassing Vite's module cache and preventing browser caching
+      const filePath = resolve(process.cwd(), 'dist/main.iife.js');
+      server.middlewares.use('/dist/main.iife.js', (_req, res) => {
+        res.setHeader('Content-Type', 'application/javascript');
+        res.setHeader('Cache-Control', 'no-store');
+        const stream = createReadStream(filePath);
+        stream.on('error', () => {
+          res.statusCode = 404;
+          res.setHeader('Content-Type', 'text/plain');
+          res.end('Not found');
+        });
+        stream.pipe(res);
+      });
+    },
     handleHotUpdate() {
       if (isBuilding) return;
 
@@ -67,7 +84,8 @@ export default defineConfig(({ command, mode }) => {
     plugins: [preact(), tailwindcss(), autoRebuild()],
     server: {
       cors: true,
-      port: 5173
+      port: 5173,
+      allowedHosts: true
     }
   };
 });

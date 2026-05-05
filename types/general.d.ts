@@ -25,3 +25,7 @@ export type StatusPage = {
     severity: 'ok' | 'maintenance' | 'no_severity' | 'minor' | 'major';
   };
 };
+
+export type ErrorResponse = {
+  error: string;
+};
