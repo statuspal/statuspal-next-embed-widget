@@ -1,4 +1,3 @@
-import './banner.css';
 import { Fragment } from 'preact';
 import { useState, useEffect, useRef } from 'preact/hooks';
 import { StatusResponse } from 'types/general';

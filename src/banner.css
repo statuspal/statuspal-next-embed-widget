@@ -1,15 +1,11 @@
-/* CSS variables for slide directions - scoped to the container */
-#statuspal-next-banner-container {
-  .banner-slide-left {
-    --slide: -100%;
-  }
-
-  .banner-slide-right {
-    --slide: 100%;
-  }
+.banner-slide-left {
+  --slide: -100%;
 }
 
-/* Custom keyframes - cannot be replicated with Tailwind animations - scoped to container */
+.banner-slide-right {
+  --slide: 100%;
+}
+
 @keyframes banner-enter {
   0% {
     opacity: 0;

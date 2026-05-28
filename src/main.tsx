@@ -1,4 +1,4 @@
-import './main.css';
+import widgetCss from './main.css?inline';
 import { render } from 'preact';
 import { StatusResponse, ErrorResponse } from 'types/general';
 import Banner from './banner';
@@ -12,6 +12,23 @@ export const STATUSPAL_NEXT_BANNER_LOCAL_STORAGE_KEY =
 export const STATUSPAL_NEXT_BADGE_CONTAINER_CLASS = 'statuspal-next-badge';
 export const STATUSPAL_NEXT_CLOSE_BANNER_EVENT = 'statuspal-next-close-banner';
 export const REFRESH_INTERVAL = 60000; // ms
+
+// Attach a shadow root to the host element (if not already attached) and
+// inject the widget styles inside it. Returns the element Preact should render
+// into - kept separate from the <style> tag so re-renders don't drop it.
+const ensureShadowRenderRoot = (host: Element): Element => {
+  let shadow = host.shadowRoot;
+  if (!shadow) {
+    shadow = host.attachShadow({ mode: 'open' });
+    const style = document.createElement('style');
+    style.textContent = widgetCss;
+    shadow.appendChild(style);
+    const renderRoot = document.createElement('div');
+    shadow.appendChild(renderRoot);
+    return renderRoot;
+  }
+  return shadow.querySelector('div') as Element;
+};
 
 let interval: number | null = null;
 let previousStatus = '';
@@ -55,14 +72,17 @@ window.StatusPalNextWidget = {
 
     const config = window.StatusPalNextWidget.getConfig();
 
+    const unmountShadowHost = (host: Element): void => {
+      const renderRoot = host.shadowRoot?.querySelector('div');
+      if (renderRoot) render(null, renderRoot);
+      host.remove();
+    };
+
     // Find and remove the banner container
     const container = document.getElementById(
       STATUSPAL_NEXT_BANNER_CONTAINER_ID
     );
-    if (container) {
-      render(null, container);
-      container.remove();
-    }
+    if (container) unmountShadowHost(container);
 
     if (options.onlyBanner) return;
 
@@ -73,10 +93,7 @@ window.StatusPalNextWidget = {
       .querySelectorAll(
         `:where(${config.badge.selector}, .noticely-badge-container) .${STATUSPAL_NEXT_BADGE_CONTAINER_CLASS}`
       )
-      .forEach(container => {
-        render(null, container);
-        container.remove();
-      });
+      .forEach(unmountShadowHost);
   },
   getConfig: (): ReturnType<typeof window.StatusPalNextWidget.getConfig> => {
     const {
@@ -168,11 +185,11 @@ const renderWidget = async (
         container = document.createElement('div');
         container.id = STATUSPAL_NEXT_BANNER_CONTAINER_ID;
         document.body.appendChild(container);
-      } else {
-        render(null, container); // Clear previous render
       }
+      const renderRoot = ensureShadowRenderRoot(container);
+      if (!isInitialRender) render(null, renderRoot); // Clear previous render
 
-      // Render the banner into the container
+      // Render the banner into the shadow root
       render(
         <Banner
           data={data}
@@ -182,7 +199,7 @@ const renderWidget = async (
             noEnterAnimation: !isInitialRender && options.noEnterAnimation
           }}
         />,
-        container
+        renderRoot
       );
     } else {
       window.StatusPalNextWidget.destroy({ onlyBanner: true });
@@ -209,18 +226,18 @@ const renderWidget = async (
     let container = badgeElement.querySelector(
       `.${STATUSPAL_NEXT_BADGE_CONTAINER_CLASS}`
     );
+    const isInitialRender = !container;
     if (!container) {
       container = document.createElement('span');
-      container.classList.add(
-        STATUSPAL_NEXT_BADGE_CONTAINER_CLASS,
-        'align-middle',
-        'ml-2',
-        'inline-flex'
-      );
+      container.classList.add(STATUSPAL_NEXT_BADGE_CONTAINER_CLASS);
+      // Inline styles for the host span - it lives in the page's DOM so
+      // shadow-root styles can't reach it.
+      (container as HTMLElement).style.cssText =
+        'display:inline-flex;vertical-align:middle;margin-left:0.5rem;';
       badgeElement.appendChild(container);
-    } else {
-      render(null, container); // Clear previous render
     }
+    const renderRoot = ensureShadowRenderRoot(container);
+    if (!isInitialRender) render(null, renderRoot); // Clear previous render
 
     render(
       <Badge
@@ -233,7 +250,7 @@ const renderWidget = async (
             previousStatus === currentStatus && options.noEnterAnimation
         }}
       />,
-      container
+      renderRoot
     );
   });
 

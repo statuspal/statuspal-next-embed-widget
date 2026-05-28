@@ -1,9 +1,6 @@
-import './badge.css';
 import { useRef } from 'preact/hooks';
 import { StatusResponse } from 'types/general';
 import Tippy from '@tippyjs/react';
-import 'tippy.js/dist/tippy.css';
-import 'tippy.js/themes/light.css';
 import { statusColors } from './helpers';
 
 const Badge = ({
@@ -48,6 +45,7 @@ const Badge = ({
       className="opacity-90"
       theme={getTheme()}
       placement={placement}
+      appendTo="parent"
     >
       <span
         className={`

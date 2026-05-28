@@ -1,8 +1,14 @@
 @import 'tailwindcss/theme.css' layer(theme);
 @import 'tailwindcss/utilities.css' layer(utilities) source(none);
 
+@import 'tippy.js/dist/tippy.css';
+@import 'tippy.js/themes/light.css';
+
+@import './banner.css';
+@import './badge.css';
+
 @source '../src';
 
 @plugin 'daisyui' {
-  root: ':where(#statuspal-next-banner-container, .statuspal-next-badge)';
+  root: ':host';
 }

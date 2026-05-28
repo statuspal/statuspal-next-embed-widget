@@ -2,7 +2,6 @@ import { defineConfig, build, loadEnv, ViteDevServer } from 'vite';
 import preact from '@preact/preset-vite';
 import { resolve } from 'path';
 import { createReadStream } from 'fs';
-import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js';
 import tailwindcss from '@tailwindcss/vite';
 
 // Shared build configuration
@@ -53,7 +52,7 @@ const autoRebuild = () => {
 
       // Run build in background without blocking HMR
       build({
-        plugins: [preact(), tailwindcss(), cssInjectedByJsPlugin()],
+        plugins: [preact(), tailwindcss()],
         mode: 'development',
         build: createBuildConfig(true),
         configFile: false,
@@ -72,7 +71,7 @@ const autoRebuild = () => {
 export default defineConfig(({ command, mode }) => {
   if (command === 'build')
     return {
-      plugins: [preact(), tailwindcss(), cssInjectedByJsPlugin()],
+      plugins: [preact(), tailwindcss()],
       define: {
         'process.env': loadEnv(mode, process.cwd())
       },
