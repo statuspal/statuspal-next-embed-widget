@@ -1,5 +1,6 @@
 export type StatusResponse = {
   ongoing_notices: Notice[];
+  planned_notices: Notice[];
   services: Service[];
   status_page: StatusPage;
 };
@@ -13,6 +14,10 @@ export type Notice = {
   severity?: 'major' | 'minor' | '' | null;
   affected_services: { [key: string]: string[] };
 };
+
+export type NoticeState = 'planned' | 'ongoing';
+
+export type NoticeWithState = Notice & { state: NoticeState };
 
 export type Service = {
   id: string;

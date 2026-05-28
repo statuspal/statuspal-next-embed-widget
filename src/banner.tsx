@@ -1,9 +1,9 @@
 import { Fragment } from 'preact';
 import { useState, useEffect, useRef } from 'preact/hooks';
-import { StatusResponse } from 'types/general';
+import { NoticeWithState, Service } from 'types/general';
 import {
-  STATUSPAL_NEXT_BANNER_LOCAL_STORAGE_KEY,
-  STATUSPAL_NEXT_CLOSE_BANNER_EVENT
+  STATUSPAL_NEXT_CLOSE_BANNER_EVENT,
+  dismissNotice
 } from './main';
 import ExclamationTriangleIcon from '@heroicons/react/24/solid/ExclamationTriangleIcon';
 import WrenchIcon from '@heroicons/react/24/solid/WrenchIcon';
@@ -17,19 +17,21 @@ dayjs.extend(duration);
 
 // Main banner component - displays status information with controls
 const Banner = ({
-  data: { ongoing_notices, services },
+  notices,
+  services,
   config: {
     origin,
     banner: { position, theme }
   },
   options = {}
 }: {
-  data: StatusResponse;
+  notices: NoticeWithState[];
+  services: Service[];
   config: ReturnType<typeof window.StatusPalNextWidget.getConfig>;
   options?: { noEnterAnimation?: boolean };
 }) => {
-  const [ongoingNotices, setOngoingNotices] = useState([...ongoing_notices]);
-  const [currentNotice, setCurrentNotice] = useState(ongoingNotices[0]);
+  const [visibleNotices, setVisibleNotices] = useState([...notices]);
+  const [currentNotice, setCurrentNotice] = useState(visibleNotices[0]);
   const [isClosing, setIsClosing] = useState(false);
 
   const bannerRef = useRef<HTMLDivElement>(null);
@@ -40,7 +42,7 @@ const Banner = ({
     const handleAnimationEnd = () => {
       if (!isClosing) return;
 
-      if (ongoingNotices.length < 2) {
+      if (visibleNotices.length < 2) {
         window.StatusPalNextWidget.destroy({
           onlyBanner: true,
           animationEnded: true
@@ -48,7 +50,7 @@ const Banner = ({
         return;
       }
 
-      setOngoingNotices(prev => prev.slice(1));
+      setVisibleNotices(prev => prev.slice(1));
       setIsClosing(false);
     };
 
@@ -56,11 +58,11 @@ const Banner = ({
 
     return () =>
       bannerElement.removeEventListener('animationend', handleAnimationEnd);
-  }, [isClosing, ongoingNotices.length]);
+  }, [isClosing, visibleNotices.length]);
 
   useEffect(
-    () => setCurrentNotice(ongoingNotices[0]),
-    [ongoingNotices, ongoingNotices.length]
+    () => setCurrentNotice(visibleNotices[0]),
+    [visibleNotices, visibleNotices.length]
   );
 
   useEffect(() => {
@@ -95,16 +97,7 @@ const Banner = ({
     setIsClosing(true);
 
     if (!window.StatusPalNextWidgetConfig.demo)
-      localStorage.setItem(
-        STATUSPAL_NEXT_BANNER_LOCAL_STORAGE_KEY,
-        JSON.stringify([
-          ...JSON.parse(
-            localStorage.getItem(STATUSPAL_NEXT_BANNER_LOCAL_STORAGE_KEY) ||
-              '[]'
-          ),
-          currentNotice.id
-        ])
-      );
+      dismissNotice(currentNotice.id, currentNotice.state);
   };
 
   const humanizedDuration = (): string => {
@@ -132,6 +125,9 @@ const Banner = ({
 
     const duration = parts.join(' ');
 
+    if (currentNotice.state === 'planned')
+      return `Starts at: ${dayjs(currentNotice.starts_at).format('YYYY-MM-DD HH:mm')}${currentNotice.ends_at ? ` · Duration: ${duration}` : ''}`;
+
     return currentNotice.notice_type === 'maintenance'
       ? `Started at: ${dayjs(currentNotice.starts_at).format('YYYY-MM-DD HH:mm')}${currentNotice.ends_at ? ` · Duration: ${duration}` : ''}`
       : `Ongoing for ${duration}`;
@@ -157,7 +153,7 @@ const Banner = ({
           ${
             isClosing
               ? 'animate-[banner-exit_0.3s_ease-in_forwards]'
-              : ongoingNotices.length !== ongoing_notices.length
+              : visibleNotices.length !== notices.length
                 ? 'animate-[banner-fade-in_0.2s_ease-in]'
                 : ''
           }

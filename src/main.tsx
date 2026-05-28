@@ -1,6 +1,11 @@
 import widgetCss from './main.css?inline';
 import { render } from 'preact';
-import { StatusResponse, ErrorResponse } from 'types/general';
+import {
+  StatusResponse,
+  ErrorResponse,
+  NoticeWithState,
+  NoticeState
+} from 'types/general';
 import Banner from './banner';
 import Badge from './badge';
 import testResponse from './test-response';
@@ -12,6 +17,28 @@ export const STATUSPAL_NEXT_BANNER_LOCAL_STORAGE_KEY =
 export const STATUSPAL_NEXT_BADGE_CONTAINER_CLASS = 'statuspal-next-badge';
 export const STATUSPAL_NEXT_CLOSE_BANNER_EVENT = 'statuspal-next-close-banner';
 export const REFRESH_INTERVAL = 60000; // ms
+
+export type DismissedEntry = { id: string; state: NoticeState };
+
+// Legacy storage was `string[]` — migrate those entries as ongoing dismissals
+// so currently-dismissed notices stay dismissed across the format change.
+export const readDismissedNotices = (): DismissedEntry[] => {
+  const raw = JSON.parse(
+    localStorage.getItem(STATUSPAL_NEXT_BANNER_LOCAL_STORAGE_KEY) || '[]'
+  );
+  return raw.map((entry: string | DismissedEntry) =>
+    typeof entry === 'string' ? { id: entry, state: 'ongoing' } : entry
+  );
+};
+
+export const dismissNotice = (id: string, state: NoticeState): void => {
+  const list = readDismissedNotices().filter(e => e.id !== id);
+  list.push({ id, state });
+  localStorage.setItem(
+    STATUSPAL_NEXT_BANNER_LOCAL_STORAGE_KEY,
+    JSON.stringify(list)
+  );
+};
 
 const ensureShadowRenderRoot = (host: Element): Element => {
   let shadow = host.shadowRoot;
@@ -159,20 +186,37 @@ const renderWidget = async (
     data = testResponse;
   }
 
-  if (window.StatusPalNextWidgetConfig.demo && !data.ongoing_notices.length)
+  if (
+    window.StatusPalNextWidgetConfig.demo &&
+    !data.ongoing_notices.length &&
+    !data.planned_notices?.length
+  )
     data = testResponse;
 
   if (config.banner.enabled) {
+    const merged: NoticeWithState[] = [
+      ...data.ongoing_notices.map(n => ({ ...n, state: 'ongoing' as const })),
+      ...(data.planned_notices ?? []).map(n => ({
+        ...n,
+        state: 'planned' as const
+      }))
+    ];
+
+    let notices = merged;
     if (!window.StatusPalNextWidgetConfig.demo) {
-      const viewedNoticeIds = JSON.parse(
-        localStorage.getItem(STATUSPAL_NEXT_BANNER_LOCAL_STORAGE_KEY) || '[]'
-      );
-      data.ongoing_notices = data.ongoing_notices.filter(
-        notice => !viewedNoticeIds.includes(notice.id)
-      );
+      const dismissed = readDismissedNotices();
+      notices = merged.filter(notice => {
+        const entry = dismissed.find(d => d.id === notice.id);
+        if (!entry) return true;
+        // Planned notices are hidden by any prior dismissal; ongoing notices
+        // are only hidden when the prior dismissal was also while ongoing —
+        // a planned-state dismissal re-shows once it becomes ongoing.
+        if (notice.state === 'planned') return false;
+        return entry.state !== 'ongoing';
+      });
     }
 
-    if (data.ongoing_notices.length) {
+    if (notices.length) {
       // Find existing container or create new one
       let container = document.getElementById(
         STATUSPAL_NEXT_BANNER_CONTAINER_ID
@@ -189,7 +233,8 @@ const renderWidget = async (
       // Render the banner into the shadow root
       render(
         <Banner
-          data={data}
+          notices={notices}
+          services={data.services}
           config={config}
           options={{
             ...options,

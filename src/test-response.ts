@@ -80,5 +80,18 @@ export default {
       severity: '',
       affected_services: {}
     }
+  ],
+  planned_notices: [
+    {
+      id: 'b29b0a47-9d8d-4a3e-9c1f-1b2ab9af0e22',
+      notice_type: 'maintenance',
+      starts_at: now.add(2, 'days').toISOString(),
+      ends_at: now.add(2, 'days').add(1, 'hour').toISOString(),
+      title: 'Demo planned maintenance',
+      severity: null,
+      affected_services: {
+        'd3a3c5b2-78ee-481b-8f91-9db57e1cec8f': ['EU']
+      }
+    }
   ]
 } as StatusResponse;

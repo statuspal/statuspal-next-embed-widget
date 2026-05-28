@@ -59,7 +59,7 @@ const Badge = ({
       >
         <span
           className={`
-            bg-inherit rounded-full animate-ping absolute inset-0 -z-10
+            bg-inherit rounded-full animate-ping absolute inset-0
             ${status_page.current_status.severity === 'ok' ? 'opacity-30' : 'opacity-50'}
           `}
         />
