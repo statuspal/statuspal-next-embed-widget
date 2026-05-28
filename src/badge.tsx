@@ -9,11 +9,13 @@ const Badge = ({
     badge: { placement, theme }
   },
   element,
+  tooltipContainer,
   options = {}
 }: {
   data: StatusResponse;
   config: ReturnType<typeof window.StatusPalNextWidget.getConfig>;
   element: HTMLElement;
+  tooltipContainer: HTMLElement;
   options?: { noEnterAnimation?: boolean };
 }) => {
   const elementRef = useRef<HTMLElement>(element);
@@ -45,7 +47,7 @@ const Badge = ({
       className="opacity-90"
       theme={getTheme()}
       placement={placement}
-      appendTo="parent"
+      appendTo={tooltipContainer}
     >
       <span
         className={`
@@ -57,7 +59,7 @@ const Badge = ({
       >
         <span
           className={`
-            bg-inherit rounded-full animate-ping absolute inset-0
+            bg-inherit rounded-full animate-ping absolute inset-0 -z-10
             ${status_page.current_status.severity === 'ok' ? 'opacity-30' : 'opacity-50'}
           `}
         />

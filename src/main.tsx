@@ -13,9 +13,6 @@ export const STATUSPAL_NEXT_BADGE_CONTAINER_CLASS = 'statuspal-next-badge';
 export const STATUSPAL_NEXT_CLOSE_BANNER_EVENT = 'statuspal-next-close-banner';
 export const REFRESH_INTERVAL = 60000; // ms
 
-// Attach a shadow root to the host element (if not already attached) and
-// inject the widget styles inside it. Returns the element Preact should render
-// into - kept separate from the <style> tag so re-renders don't drop it.
 const ensureShadowRenderRoot = (host: Element): Element => {
   let shadow = host.shadowRoot;
   if (!shadow) {
@@ -230,10 +227,8 @@ const renderWidget = async (
     if (!container) {
       container = document.createElement('span');
       container.classList.add(STATUSPAL_NEXT_BADGE_CONTAINER_CLASS);
-      // Inline styles for the host span - it lives in the page's DOM so
-      // shadow-root styles can't reach it.
       (container as HTMLElement).style.cssText =
-        'display:inline-flex;vertical-align:middle;margin-left:0.5rem;';
+        'display:inline-flex;align-items:center;vertical-align:middle;line-height:0;margin-left:0.5rem;';
       badgeElement.appendChild(container);
     }
     const renderRoot = ensureShadowRenderRoot(container);
@@ -244,6 +239,7 @@ const renderWidget = async (
         data={data}
         config={config}
         element={badgeElement as HTMLElement}
+        tooltipContainer={renderRoot as HTMLElement}
         options={{
           ...options,
           noEnterAnimation:
