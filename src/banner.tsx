@@ -1,10 +1,7 @@
 import { Fragment } from 'preact';
 import { useState, useEffect, useRef } from 'preact/hooks';
 import { NoticeWithState, Service } from 'types/general';
-import {
-  STATUSPAL_NEXT_CLOSE_BANNER_EVENT,
-  dismissNotice
-} from './main';
+import { STATUSPAL_NEXT_CLOSE_BANNER_EVENT, dismissNotice } from './main';
 import ExclamationTriangleIcon from '@heroicons/react/24/solid/ExclamationTriangleIcon';
 import WrenchIcon from '@heroicons/react/24/solid/WrenchIcon';
 import XMarkIcon from '@heroicons/react/24/solid/XMarkIcon';
