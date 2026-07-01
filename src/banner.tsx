@@ -156,7 +156,7 @@ const Banner = ({
           }
         `}
       >
-        <IconComponent className="size-8 min-w-fit" />
+        <IconComponent className="size-8 shrink-0" />
 
         <div className="flex flex-col gap-3 max-sm:gap-2 w-full">
           <div className="flex justify-between gap-3">
